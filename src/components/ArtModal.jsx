@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import BookCard from "./BookCard";
 
 function ArtModal(props) {
-  const { show, onHide, artwork, bookList, bookHandler, artHandler, artworks} = props;
+  const { show, onHide, artwork, bookList, bookHandler, artHandler, artworks } = props;
   return (
     <Modal
       {...props}
@@ -18,7 +18,6 @@ function ArtModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {/* <h4>Centered Modal</h4> */}
         <ArtworkDetail
           artwork={artwork}
           id={artwork.image_id}
@@ -36,7 +35,7 @@ function ArtModal(props) {
             artwork.artwork_type_title
           )}
           artHandler={() =>
-           artHandler(
+            artHandler(
               artwork?.artist_display,
               artwork?.medium_display,
               artwork?.artwork_type_title
@@ -49,42 +48,32 @@ function ArtModal(props) {
               <BookCard
                 key={index}
                 thumbnail={book.volumeInfo.imageLinks?.thumbnail}
-                // thumbnail={book.volumeInfo.imageLinks.thumbnail}
                 title={book.volumeInfo.title || 'Untitled'}
                 author={book.volumeInfo.authors || 'Unknown Author'}
               // description={book.volumeInfo.description || 'No specific description'}
               />
 
             ))}
-            {/* <ArtworkCard
-  key={index}
-  id={art.id}
-  title={art.title}
-  url={`https://www.artic.edu/iiif/2/${art.image_id}/full/843,/0/default.jpg`}
-  detailHandler={() => console.log('Clicked art in modal', art)}
-/> */}
-
-
           </div>
         )}
 
-{artworks && artworks.length > 0 && (
-  <div className='rec-art-list'>
-    <h5>Similar Artworks</h5>
-    <div className='artwork-list'>
-      {artworks.map((art, index) => (
-        <div key={index}>
-          <img
-            src={`https://www.artic.edu/iiif/2/${art.image_id}/full/843,/0/default.jpg`}
-            alt={art.title}
-            style={{ width: '100px', height: 'auto', margin: '0.5rem' }}
-          />
-          <p>{art.title}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+        {artworks && artworks.length > 0 && (
+          <div className='rec-art-list'>
+            {/* <h5>Similar Artworks</h5> */}
+            <div className='artwork-list'>
+              {artworks.map((art, index) => (
+                <div key={index}>
+                  <img
+                    src={`https://www.artic.edu/iiif/2/${art.image_id}/full/843,/0/default.jpg`}
+                    alt={art.title}
+                    style={{ width: '100px', height: 'auto', margin: '0.5rem' }}
+                  />
+                  <p>{art.title}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>

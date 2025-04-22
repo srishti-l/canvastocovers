@@ -14,76 +14,95 @@ import { fetchMeArts } from './services/artAPI'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
+/**
+ * Main App component which handles the display of artworks, books, and related functionalities.
+ * @returns The rendered App component.
+ */
 function App() {
-  const [image, setImage] = useState(''); // this will be state for image changing, image is the current url, setImage is the updated
-  // would this only be for random image generator? 
-  const [book, setBook] = useState(''); // this will be the state for the book recommendation
+
+  const [image, setImage] = useState('');
   const [recArts, setRecArts] = useState([]);
   const [artwork, setArtwork] = useState(null);
   const [artworks, setArtworks] = useState([]);
-  const [error, setError] = useState(null);
-  const [id, setID] = useState('');
+  const [description, setDescription] = useState('');
   const [bookList, setBookList] = useState([]);
   const [modalShow, setModalShow] = React.useState(false);
+  const [error, setError] = useState(null);
+
+  // const myFavs = localStorage.getItem('my.favorites')
+  //   ? JSON.parse(localStorage.getItem('my.favorites')) :
+  //   []
+  // const [favorites, setFavorites] = useState([]);
+
+  // const updatedMemories = [...memories, newMemory].sort((a, b) => {
+  //   return new Date(a.date) - new Date(b.date);
+  // });
+  // setMemories(updatedMemories);
+  // localStorage.setItem('stored.memories', JSON.stringify(updatedMemories));
 
 
-  const handleArtDetails = (art) => {
-    const artwork_id = art.id;
-    try {
-      // const artwork = await fetchArtworkById(artwork_id.id)
-      console.log(artwork_id);
-    } catch {
-      setError('Failed to load artwork');
-    }
+  const handleDescription = async (desc) => {
+    // setDescription('');
+    console.log(desc)
+    setDescription(desc || 'No description available')
   }
-
-  // getting the book list 
+  
+   /**
+   * Fetches books related to the artwork, based on the artist, title, medium, and type.
+   * @param {string} artist The artist's name.
+   * @param {string} title The artwork's title.
+   * @param {string} medium The medium used for the artwork.
+   * @param {string} type The type of artwork (e.g., painting, sculpture).
+   */
   const handleFetchMeBook = async (artist, title, medium, type) => {
-    // const books = await fetchMeBooks("Van Gogh", "Starry Night", "Oil", "Painting");
     setBookList([]);
     setRecArts([]);
-    // setArtworks([]);
     const books = await fetchMeBooks(artist, title, medium, type)
     console.log(books);
     setBookList(books);
   }
 
-  //  getting art list
+   /**
+   * Fetches artworks similar to the selected artwork, based on artist, medium, and type.
+   * @param {string} artist The artist's name.
+   * @param {string} medium The medium used for the artwork.
+   * @param {string} type The type of artwork.
+   */
   const handleFetchMeArts = async (artist, medium, type) => {
     setRecArts([]);
     setBookList([]);
     const arts = await fetchMeArts(artist, medium, type);
-    // setArtworks(arts)
     setRecArts(Array.isArray(arts) ? arts : []);
   }
 
-  // getting the images for the art modal 
+  /**
+   * Sets the image for the modal when an artwork is clicked.
+   * @param {object} art The artwork object to display in the modal.
+   */
   const getImage = (art) => {
     console.log('the click worked');
     setRecArts([]);
     setBookList([]);
-    setImage(art); // Set the selected artwork in state
+    setImage(art); 
     setModalShow(true);
   };
 
 
-  //  get single art pieces 
+  /**
+   * Fetches a random artwork and its details.
+   */
   const handleFetchArtwork = async () => {
-    // const id = '129884'; // example ID from AIC
     try {
       setArtworks([]);
       const artworksList = await fetchArtworks(10);
-
-      // Step 2: Pick a random one
       const randomArtwork = artworksList[Math.floor(Math.random() * artworksList.length)];
-
-      // Step 3: Fetch full details for that artwork
       const data = await fetchArtworkById(randomArtwork.id);
       console.log(randomArtwork.id)
-      // const data = await fetchArtworkById(id);
+      
+      setRecArts([]);
       setBookList([]);
       setArtwork(data);
-      // setArtworks([]);
+
       console.log('works');
     } catch (err) {
       setError('Failed to load artwork');
@@ -91,13 +110,14 @@ function App() {
     }
   };
 
-  //  get art gallery 
+  /**
+   * Fetches the artwork gallery and filters artworks that have an image ID.
+   */
   const handleArtworkGallery = async () => {
     try {
       const art = await fetchArtworks();
       const filteredArtworks = art.filter(a => a.image_id);
       setArtworks(filteredArtworks);
-      // setArtworks(art);
       setArtwork();
 
     } catch (err) {
@@ -115,31 +135,29 @@ function App() {
       </h1>
 
       <main>
-        {/* click for random art  */}
+        {/* Button to trigger random artwork fetching  */}
         <button className='user-option' onClick={handleFetchArtwork}>Random Artwork</button>
 
-        {/* click for gallery view  */}
-        <button className='user-option' onClick={handleArtworkGallery}>View Our Gallery</button>
+        {/* Button to trigger gallery view */}
+        <button className='user-option' onClick={handleArtworkGallery}>View Gallery</button>
 
-        {/* check rationale of error code */}
-
+        {/* Error message if artwork fetching fails */}
         {error && <p>{error}</p>}
 
-        {/* if the artwork exists, diplay artwork details onClick */}
-
+        {/* If there's an artwork, show its details */}
         {artwork && (
           <div>
             <ArtworkDetail
-              id={artwork.image_id}
-              url={`https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`}
-              title={artwork.title}
-              artist={artwork.artist_display}
-              medium={artwork.medium_display}
-              artworktype={artwork.artwork_type_title}
-              year={artwork.date_display}
+              id={artwork?.image_id}
+              url={`https://www.artic.edu/iiif/2/${artwork?.image_id}/full/843,/0/default.jpg`}
+              title={artwork?.title}
+              artist={artwork?.artist_display}
+              medium={artwork?.medium_display}
+              artworktype={artwork?.artwork_type_title}
+              year={artwork?.date_display}
               description={artwork.thumbnail?.alt_text || 'No description available.'}
 
-              // book button 
+              // List of recommended books
               bookHandler={() =>
                 handleFetchMeBook(
                   artwork?.artist,
@@ -149,7 +167,7 @@ function App() {
                 )
               }
 
-              // similar art button 
+              // List of similar artworks 
               artHandler={() =>
                 handleFetchMeArts(
                   artwork?.artist_display,
@@ -158,8 +176,8 @@ function App() {
                 )
               }
             />
-            {/* <button onClick={() => handleFetchMeBook(artwork.artist, artwork.title, artwork.medium_display, artwork.artwork_type_title)}>Get Book Recs</button> */}
-            {/* generate recommended book list  */}
+            
+            {/* List of recommended books */}
             <div className='book-list'>
               {bookList.length > 0 ? (
                 bookList.map((book, index) => {
@@ -169,9 +187,10 @@ function App() {
 
                   const thumbnail = info.imageLinks?.thumbnail || 'https://via.placeholder.com/150?text=No+Image';
                   const title = info.title || 'Untitled';
-                  const author = Array.isArray(info.authors) && info.authors.length > 0
+                  const author = info.authors && info.authors.length > 0
                     ? info.authors[0]
                     : 'Unknown Author';
+                  const bookDescription = info.description || 'No description available';
 
                   return (
                     <BookCard
@@ -179,6 +198,10 @@ function App() {
                       thumbnail={thumbnail}
                       title={title}
                       author={author}
+                      // description={bookDescription}
+                      // descriptionHandler={() => handleDescription(bookDescription)}
+
+                      
                     />
                   );
                 })
@@ -188,8 +211,7 @@ function App() {
               )}
             </div>
 
-            {/* populate recommended arts on button click */}
-            {/* generate recommended art list  */}
+            {/* Similar artworks */}
             <div className='rec-art-list'>
               {recArts.map((art, index) => (
                 <ArtworkCard
@@ -210,7 +232,7 @@ function App() {
           </div>
         )}
 
-        {/* populate the gallery */}
+        {/* Display artwork gallery */}
         <div className='gallery'>
 
           {artworks.map((art, index) => (
@@ -246,14 +268,9 @@ function App() {
           }
         </div>
 
-        {/* <Recommender /> */}
       </main>
 
-      {/* <Footer /> */}
-
-      {/* <footer>
-        <Footer />
-      </footer> */}
+      <Footer />
 
     </>
   )
