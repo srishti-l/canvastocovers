@@ -144,13 +144,11 @@ button:focus-visible {
 }
 
 .sticky {
-  /* font-family: Luminari; */
   position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
   background-color: #f5cbccff;
-  /* color: ; */
   text-align: center;
   padding: 10px;
 }

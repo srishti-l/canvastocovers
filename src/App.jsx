@@ -29,20 +29,8 @@ function App() {
   const [modalShow, setModalShow] = React.useState(false);
   const [error, setError] = useState(null);
 
-  // const myFavs = localStorage.getItem('my.favorites')
-  //   ? JSON.parse(localStorage.getItem('my.favorites')) :
-  //   []
-  // const [favorites, setFavorites] = useState([]);
-
-  // const updatedMemories = [...memories, newMemory].sort((a, b) => {
-  //   return new Date(a.date) - new Date(b.date);
-  // });
-  // setMemories(updatedMemories);
-  // localStorage.setItem('stored.memories', JSON.stringify(updatedMemories));
-
 
   const handleDescription = async (desc) => {
-    // setDescription('');
     setDescription(desc || 'No description available')
   }
 
@@ -228,12 +216,7 @@ function App() {
               title={art.title}
               url={`https://www.artic.edu/iiif/2/${art.image_id}/full/843,/0/default.jpg`}
               detailHandler={() => getImage(art)}
-
-              // onError={(e) => e.target.src = 'https://via.placeholder.com/300'} 
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = 'https://via.placeholder.com/300?text=Image+Not+Available';
-              }}
+              onError={(e) => e.target.src = 'https://via.placeholder.com/300?text=Image+Not+Available'}
             />
 
           ))}
