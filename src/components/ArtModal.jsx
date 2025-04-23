@@ -3,6 +3,15 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import BookCard from "./BookCard";
 
+
+/**
+ * A component imported from Bootstrap, that renders a modal when an image is clicked on, and reveals art details. .
+ *
+ * @component
+ * @param {Object} props - The props object.
+ *
+ * @returns {JSX.Element} A JSX element that displays the modal with artwork details
+ */
 function ArtModal(props) {
   const { show, onHide, artwork, bookList, bookHandler, artHandler, artworks } = props;
   return (

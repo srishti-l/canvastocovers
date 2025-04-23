@@ -16,8 +16,8 @@ const apikey = `AIzaSyBoOykZVOhblPnKVc4WILG2pvMK9TBrNyY`
 export const fetchMeBooks = async (artist, title, medium, artworktype) => {
   try {
     const filters = [artist, title, medium, artworktype]
-      .filter(Boolean) // remove undefined/null/empty
-      .join(' '); // join into one string
+      .filter(item => item != null && item !== '') 
+      .join(' '); 
 
 
     const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${filters}`);
