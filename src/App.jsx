@@ -171,7 +171,6 @@ function App() {
             <div className='book-list'>
               {bookList && bookList.length > 0 && (
                 bookList.map((book, index) => {
-                  console.log(book);
                   const info = book.volumeInfo;
 
                   if (!info) return null;
