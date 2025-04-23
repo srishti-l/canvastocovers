@@ -30,7 +30,6 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  /* background-color: #f5cbccff; */
 }
 
 
@@ -133,6 +132,15 @@ button:focus-visible {
   color: red;
   filter: drop-shadow(0 0 10px red);
   transform: scale(1.2);
+}
+
+.book-desc {
+  cursor: pointer;
+}
+
+.book-desc:hover {
+  text-decoration: underline;
+  filter: drop-shadow(0 0 10px red);
 }
 
 .sticky {

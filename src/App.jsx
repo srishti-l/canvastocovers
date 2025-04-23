@@ -15,8 +15,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 /**
- * Main App component which handles the display of artworks, books, and related functionalities.
- * @returns The rendered App component.
+ * Main App component which handles the display of artworks, books, and all of the related functionalities
+ * @returns {JSX.Element} The rendered App component.
  */
 function App() {
 
@@ -25,7 +25,7 @@ function App() {
   const [artwork, setArtwork] = useState(null);
   const [artworks, setArtworks] = useState([]);
   const [description, setDescription] = useState('');
-  const [bookList, setBookList] = useState([]);
+  const [bookList, setBookList] = useState(null);
   const [modalShow, setModalShow] = React.useState(false);
   const [error, setError] = useState(null);
 
@@ -43,36 +43,34 @@ function App() {
 
   const handleDescription = async (desc) => {
     // setDescription('');
-    console.log(desc)
     setDescription(desc || 'No description available')
   }
-  
-   /**
-   * Fetches books related to the artwork, based on the artist, title, medium, and type.
-   * @param {string} artist The artist's name.
-   * @param {string} title The artwork's title.
-   * @param {string} medium The medium used for the artwork.
-   * @param {string} type The type of artwork (e.g., painting, sculpture).
-   */
+
+  /**
+  * Fetches books related to the artwork, based on the artist, title, medium, and type.
+  * @param {string} artist The artist's name.
+  * @param {string} title The artwork's title.
+  * @param {string} medium The medium used for the artwork.
+  * @param {string} type The type of artwork (e.g., painting, sculpture).
+  */
   const handleFetchMeBook = async (artist, title, medium, type) => {
     setBookList([]);
     setRecArts([]);
-    const books = await fetchMeBooks(artist, title, medium, type)
-    console.log(books);
+    const books = await fetchMeBooks(artist, title, medium, type);
     setBookList(books);
   }
 
-   /**
-   * Fetches artworks similar to the selected artwork, based on artist, medium, and type.
-   * @param {string} artist The artist's name.
-   * @param {string} medium The medium used for the artwork.
-   * @param {string} type The type of artwork.
-   */
+  /**
+  * Fetches artworks similar to the selected artwork, based on artist, medium, and type.
+  * @param {string} artist The artist's name.
+  * @param {string} medium The medium used for the artwork.
+  * @param {string} type The type of artwork.
+  */
   const handleFetchMeArts = async (artist, medium, type) => {
     setRecArts([]);
     setBookList([]);
     const arts = await fetchMeArts(artist, medium, type);
-    setRecArts(Array.isArray(arts) ? arts : []);
+    setRecArts(arts && arts.length > 0 ? arts : ['No recommended arts']);
   }
 
   /**
@@ -80,10 +78,9 @@ function App() {
    * @param {object} art The artwork object to display in the modal.
    */
   const getImage = (art) => {
-    console.log('the click worked');
     setRecArts([]);
     setBookList([]);
-    setImage(art); 
+    setImage(art);
     setModalShow(true);
   };
 
@@ -97,13 +94,11 @@ function App() {
       const artworksList = await fetchArtworks(10);
       const randomArtwork = artworksList[Math.floor(Math.random() * artworksList.length)];
       const data = await fetchArtworkById(randomArtwork.id);
-      console.log(randomArtwork.id)
-      
+
       setRecArts([]);
       setBookList([]);
       setArtwork(data);
 
-      console.log('works');
     } catch (err) {
       setError('Failed to load artwork');
       console.error(err);
@@ -148,13 +143,9 @@ function App() {
         {artwork && (
           <div>
             <ArtworkDetail
+              {...artwork}
               id={artwork?.image_id}
               url={`https://www.artic.edu/iiif/2/${artwork?.image_id}/full/843,/0/default.jpg`}
-              title={artwork?.title}
-              artist={artwork?.artist_display}
-              medium={artwork?.medium_display}
-              artworktype={artwork?.artwork_type_title}
-              year={artwork?.date_display}
               description={artwork.thumbnail?.alt_text || 'No description available.'}
 
               // List of recommended books
@@ -176,11 +167,11 @@ function App() {
                 )
               }
             />
-            
-            {/* List of recommended books */}
+
             <div className='book-list'>
-              {bookList.length > 0 ? (
+              {bookList && bookList.length > 0 && (
                 bookList.map((book, index) => {
+                  console.log(book);
                   const info = book.volumeInfo;
 
                   if (!info) return null;
@@ -198,18 +189,14 @@ function App() {
                       thumbnail={thumbnail}
                       title={title}
                       author={author}
-                      // description={bookDescription}
-                      // descriptionHandler={() => handleDescription(bookDescription)}
-
-                      
+                      description={bookDescription}
+                      descriptionHandler={handleDescription}
                     />
                   );
                 })
-              ) : (
-                // <p>No Current Book Recommendations</p>
-                <p></p>
               )}
             </div>
+
 
             {/* Similar artworks */}
             <div className='rec-art-list'>
@@ -261,13 +248,13 @@ function App() {
                 bookHandler={handleFetchMeBook}
                 artHandler={handleFetchMeArts}
                 artworks={recArts}
+                descriptionHandler={handleDescription} 
               />
 
 
             </div>
           }
         </div>
-
       </main>
 
       <Footer />

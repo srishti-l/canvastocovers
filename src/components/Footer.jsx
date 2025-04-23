@@ -3,7 +3,7 @@
  *
  * @component
  *
- * @returns {JSX.Element} The rendered footer with branding text
+ * @returns {JSX.Element} The rendered footer with branding 
  */
 
 const Footer = () => {

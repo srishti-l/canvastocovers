@@ -10,8 +10,8 @@ const apikey = `AIzaSyBoOykZVOhblPnKVc4WILG2pvMK9TBrNyY`
  * @param {string} title - The artwork's title (optional)
  * @param {string} medium - The medium used in the artwork (optional)
  * @param {string} artworktype - The type of artwork (optional)
- * @returns {Promise<Array>} A promise that resolves to an array of book results,
- *                           or an empty array if an error occurs or no books are found
+ * @returns {Array} Array of book results
+ *                   
  */
 export const fetchMeBooks = async (artist, title, medium, artworktype) => {
   try {
@@ -23,8 +23,7 @@ export const fetchMeBooks = async (artist, title, medium, artworktype) => {
     const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${filters}`);
     const data = await response.json();
 
-    return data.items || []; // return books array
-    //   return data.items ? data.items.slice(0, 4) : [];
+    return data.items || []; 
   } catch (error) {
     console.error('Error fetching books:', error);
     return [];

@@ -7,22 +7,22 @@ import ArtworkCard from "./ArtworkCard";
  *
  * @component
  * @param {Object} props - Props passed to the component
- * @param {Object} props.artwork - The full artwork object (optional, may contain extra data)
- * @param {string} props.id - The ID of the artwork
- * @param {string} props.url - The URL of the artwork image
- * @param {string} props.artist - Name of the artist
- * @param {string} props.title - Title of the artwork
- * @param {string} props.year - Year the artwork was created
- * @param {string} props.medium - Medium used in the artwork
- * @param {string} props.artworktype - Type or category of the artwork
- * @param {string} props.description - Description or alternative text for the artwork
- * @param {Function} props.bookHandler - Function to fetch book recommendations
- * @param {Function} props.artHandler - Function to fetch similar artworks
+ * @param {Object} artwork - The full artwork object (optional, may contain extra data)
+ * @param {string} id - The ID of the artwork
+ * @param {string} url - The URL of the artwork image
+ * @param {string} artist_display - Name of the artist
+ * @param {string} title - Title of the artwork
+ * @param {string} date_display - Year the artwork was created
+ * @param {string} medium_display - Medium used for artwork
+ * @param {string} artwork_type_title - Type of artwork
+ * @param {string} description - Description or alt text for the artwork
+ * @param {Function} bookHandler - Function to fetch book recommendations
+ * @param {Function} artHandler - Function to fetch similar artworks
  *
  * @returns {JSX.Element} The rendered artwork detail section with image, metadata, and action buttons
  */
 
-const ArtworkDetail = ({ artwork, id, url, artist, title, year, medium, artworktype, description, bookHandler, artHandler }) => {
+const ArtworkDetail = ({ artwork, id, url, artist_display, title, date_display, medium_display, artwork_type_title, description, bookHandler, artHandler }) => {
     return (
         <>
             <figure>
@@ -31,8 +31,8 @@ const ArtworkDetail = ({ artwork, id, url, artist, title, year, medium, artworkt
                     title={title}
                     url={url} />
                 <figcaption>
-                    <h3>{title} by {artist}</h3>
-                    <p>{medium} {artworktype}, created in {year}</p>
+                    <h3>{title} by {artist_display}</h3>
+                    <p>{medium_display} {artwork_type_title}, created in {date_display}</p>
                     <p>{description}</p>
                 </figcaption>
             </figure>

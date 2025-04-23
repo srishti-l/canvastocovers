@@ -19,14 +19,10 @@ function ArtModal(props) {
       </Modal.Header>
       <Modal.Body>
         <ArtworkDetail
+          {...artwork}
           artwork={artwork}
           id={artwork.image_id}
           url={`https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`}
-          title={artwork.title}
-          artist={artwork.artist_display}
-          medium={artwork.medium_display}
-          artworktype={artwork.artwork_type_title}
-          year={artwork.date_display}
           description={artwork.thumbnail?.alt_text || 'No description available.'}
           bookHandler={() => bookHandler(
             artwork.artist_display,
@@ -50,7 +46,8 @@ function ArtModal(props) {
                 thumbnail={book.volumeInfo.imageLinks?.thumbnail}
                 title={book.volumeInfo.title || 'Untitled'}
                 author={book.volumeInfo.authors || 'Unknown Author'}
-              // description={book.volumeInfo.description || 'No specific description'}
+                description={book.volumeInfo.description || 'No specific description'}
+                descriptionHandler={props.descriptionHandler}
               />
 
             ))}
@@ -59,7 +56,6 @@ function ArtModal(props) {
 
         {artworks && artworks.length > 0 && (
           <div className='rec-art-list'>
-            {/* <h5>Similar Artworks</h5> */}
             <div className='artwork-list'>
               {artworks.map((art, index) => (
                 <div key={index}>

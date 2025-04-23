@@ -3,17 +3,17 @@
  *
  * @component
  * @param {Object} props - Props passed to the component
- * @param {string} props.title - The text to display as the page header
+ * @param {string} title - The text to display as the page header
  *
  * @returns {JSX.Element} The rendered header element
  */
 
-const Header = ({title}) => {
+const Header = ({ title }) => {
     return (
         <>
-        {title}
+            {title}
         </>
-        
+
     )
 }
 
